@@ -9,17 +9,17 @@
         "preview": "vite preview"
     },
     "dependencies": {
-        "react": "^18.2.0",
-        "react-dom": "^18.2.0"
+        "react": "^18.3.1",
+        "react-dom": "^18.3.1"
     },
     "devDependencies": {
-        "@crxjs/vite-plugin": "^2.0.0-beta.19",
-        "@types/chrome": "^0.0.248",
-        "@types/react": "^18.2.33",
-        "@types/react-dom": "^18.2.14",
-        "@vitejs/plugin-react-swc": "^3.4.0",
-        "typescript": "^5.2.2",
-        "vite": "^4.5.0"
+        "@crxjs/vite-plugin": "^2.0.0-beta.23",
+        "@types/chrome": "^0.0.268",
+        "@types/react": "^18.3.3",
+        "@types/react-dom": "^18.3.0",
+        "@vitejs/plugin-react-swc": "^3.7.0",
+        "typescript": "^5.4.5",
+        "vite": "^5.2.11"
     },
-    "packageManager": "yarn@4.0.1"
+    "packageManager": "yarn@4.2.2"
 }
