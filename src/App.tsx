@@ -22,7 +22,7 @@ function useChatGPTTabs() {
     const [value, setValue] = useState<chrome.tabs.Tab[]>([])
     useEffect(() => {
         let active = true
-        chrome.tabs.query({ url: "https://chat.openai.com/*" }).then(tabs => {
+        chrome.tabs.query({ url: ["https://chatgpt.com/*", "https://chat.openai.com/*"] }).then(tabs => {
             if (!active) return
             setValue(tabs)
         })
@@ -107,7 +107,7 @@ type FakeFileList = File[] & { item(index: number): File | null }
 
 // Code that will run inside of the ChatGPT tab.
 async function pasteImageInChatGPT(dataURI: string, text: string) {
-    const element: HTMLTextAreaElement | null = document.querySelector("textarea[placeholder='Send a message']")
+    const element: HTMLTextAreaElement | null = document.querySelector("textarea[placeholder='Message ChatGPT']")
     if (!element) return
     // Turn the data URI into a File object.
     const parts = dataURI.split(";base64,")
