@@ -46,12 +46,10 @@ function App() {
     const sendMessage = useCallback(async () => {
         let tabId = selectedTabId
         if (tabId === -1) {
-            console.error("Creating new tab")
             const tab = await chrome.tabs.create({ url: "https://chatgpt.com", active: false })
             // Wait for the tab to load.
             await new Promise<void>(resolve => {
                 chrome.tabs.onUpdated.addListener(function listener(tabId, info) {
-                    console.error(`${tabId}: ${info.status}`)
                     if (info.status === "complete" && tabId === tab.id) {
                         chrome.tabs.onUpdated.removeListener(listener)
                         resolve()
@@ -62,7 +60,6 @@ function App() {
             tabId = tab.id
         }
         if (!imageURL) return
-        console.error("There is an image, pasting it now")
         await Promise.all([
             chrome.scripting.executeScript({
                 target: { tabId },
@@ -72,7 +69,6 @@ function App() {
             }),
             chrome.tabs.update(tabId, { active: true }),
         ])
-        console.error("Done, closing extension")
         window.close()
     }, [selectedTabId, imageURL, text])
 
