@@ -34,9 +34,7 @@ function useActiveTabImageURL() {
 const defaultText = "Describe this image."
 
 function App() {
-    // TODO: Figure out how to attach to a specific ChatGPT tab, but do allow sourcing images from many tabs.
     const tabs = useChatGPTTabs()
-    // TODO: Start uploading this image immediately so that it will mostly be done by the time the user hits Enter.
     const imageURL = useActiveTabImageURL()
 
     const [text, setText] = useState("")
