@@ -4,7 +4,7 @@
     "version": "1.0.0",
     "action": { "default_popup": "index.html" },
     "permissions": ["activeTab", "scripting", "tabs"],
-    "host_permissions": ["https://chat.openai.com/*"],
+    "host_permissions": ["https://chat.openai.com/*", "https://chatgpt.com/*"],
     "commands": {
         "_execute_action": {
             "suggested_key": {

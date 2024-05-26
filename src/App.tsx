@@ -76,9 +76,16 @@ function App() {
     return (
         <div className="chat">
             <p className="chat-message">This is what ChatGPT will see when you ask your question.</p>
-            {imageURL && <img src={imageURL} style={{ width: "100%", height: 200, objectFit: "cover" }} />}
+            {imageURL && (
+                <img
+                    alt="Screenshot of your screen"
+                    src={imageURL}
+                    style={{ width: "100%", height: 200, objectFit: "cover" }}
+                />
+            )}
             <div className="chat-input">
                 <input
+                    // biome-ignore lint/a11y/noAutofocus: <explanation>
                     autoFocus
                     onChange={e => setText(e.currentTarget.value)}
                     onKeyDown={e => e.key === "Enter" && sendMessage()}
@@ -86,7 +93,9 @@ function App() {
                     type="text"
                     placeholder={defaultText}
                 />
-                <button onClick={sendMessage}>Send</button>
+                <button onClick={sendMessage} type="button">
+                    Send
+                </button>
             </div>
         </div>
     )
@@ -168,7 +177,7 @@ async function pasteImageInChatGPT(dataURI: string, text: string) {
             dataTransfer: null,
             inputType: "insertText",
             isComposing: false,
-        })
+        }),
     )
 
     // Wait for the upload to complete...
