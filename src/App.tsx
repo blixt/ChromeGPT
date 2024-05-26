@@ -1,23 +1,6 @@
 import { useCallback, useEffect, useState } from "react"
 import "./App.css"
 
-// General info about this file:
-// - This is a TypeScript file for the popup of a Chrome Extension using Manifest v3
-// - Its purpose is to represent an extension where the user can ask ChatGPT questions about the current tab they're looking at
-// - We will do this by taking a screenshot of the active tab's area and send it to an active ChatGPT tab (or create a tab if one does not exist)
-
-// What we need to do:
-// - Check all ChatGPT tabs in parallel (promises) and execute a script in each one to find the ones that are in GPT-4 with vision mode
-//   - Look at icon?
-// - Also inject a message listener that can receive an image (data URL?) as well as text in order to ask ChatGPT questions
-//   - It needs to be able to wait for the upload to complete, this can probably be done by looking at the Send button state
-//   - Finally, it needs to simulate a click on the Send button
-// - Probably the entire script that we execute in each ChatGPT tab should do all of the above setup, and early return `false` if the tab is not the appropriate GPT-4 with vision
-//   - Return `true` if the message listener was set up in the tab
-// - If in the end all come back `false` we should create a new tab with a new ChatGPT chat (with the correct mode)
-// - If any tab changes we want to be aware of it and make sure we have an up-to-date state of addressable ChatGPT instances
-// - In the final version of this UI we need to ask the user if they want to use any of their existing ChatGPT sessions, or create a new one
-
 function useChatGPTTabs() {
     const [value, setValue] = useState<chrome.tabs.Tab[]>([])
     useEffect(() => {
@@ -58,23 +41,55 @@ function App() {
 
     const [text, setText] = useState("")
 
-    const firstTabId = tabs[0]?.id
+    const [selectedTabId, setSelectedTabId] = useState<number>(tabs[0]?.id ?? -1)
+
     const sendMessage = useCallback(async () => {
-        if (!firstTabId || !imageURL) return
+        let tabId = selectedTabId
+        if (tabId === -1) {
+            console.error("Creating new tab")
+            const tab = await chrome.tabs.create({ url: "https://chatgpt.com", active: false })
+            // Wait for the tab to load.
+            await new Promise<void>(resolve => {
+                chrome.tabs.onUpdated.addListener(function listener(tabId, info) {
+                    console.error(`${tabId}: ${info.status}`)
+                    if (info.status === "complete" && tabId === tab.id) {
+                        chrome.tabs.onUpdated.removeListener(listener)
+                        resolve()
+                    }
+                })
+            })
+            if (!tab.id) return
+            tabId = tab.id
+        }
+        if (!imageURL) return
+        console.error("There is an image, pasting it now")
         await Promise.all([
             chrome.scripting.executeScript({
-                target: { tabId: firstTabId },
+                target: { tabId },
                 func: pasteImageInChatGPT,
                 args: [imageURL, text || defaultText],
                 world: "MAIN",
             }),
-            chrome.tabs.update(firstTabId, { highlighted: true }),
+            chrome.tabs.update(tabId, { active: true }),
         ])
+        console.error("Done, closing extension")
         window.close()
-    }, [firstTabId, imageURL, text])
+    }, [selectedTabId, imageURL, text])
 
     return (
         <div className="chat">
+            <select
+                className="chat-tab-selector"
+                defaultValue={selectedTabId}
+                onChange={e => setSelectedTabId(Number(e.currentTarget.value))}
+            >
+                <option value="-1">Send to new ChatGPT session</option>
+                {tabs.map(tab => (
+                    <option key={tab.id} value={tab.id}>
+                        Send to: {tab.title}
+                    </option>
+                ))}
+            </select>
             <p className="chat-message">This is what ChatGPT will see when you ask your question.</p>
             {imageURL && (
                 <img
@@ -107,8 +122,20 @@ type FakeFileList = File[] & { item(index: number): File | null }
 
 // Code that will run inside of the ChatGPT tab.
 async function pasteImageInChatGPT(dataURI: string, text: string) {
-    const element: HTMLTextAreaElement | null = document.querySelector("textarea[placeholder='Message ChatGPT']")
+    async function sleep(ms: number) {
+        return new Promise<void>(resolve => {
+            setTimeout(() => resolve(), ms)
+        })
+    }
+
+    // Waiting a little bit can help with some edge cases.
+    await sleep(200)
+
+    // Find the text input.
+    const placeholder = "Message ChatGPT"
+    const element: HTMLTextAreaElement | null = document.querySelector(`textarea[placeholder='${placeholder}']`)
     if (!element) return
+
     // Turn the data URI into a File object.
     const parts = dataURI.split(";base64,")
     const imageType = parts[0].split(":")[1]
@@ -118,8 +145,8 @@ async function pasteImageInChatGPT(dataURI: string, text: string) {
         uInt8Array[i] = decodedData.charCodeAt(i)
     }
     const file = new File([uInt8Array], "image", { type: imageType })
-    // Create a fake "paste" event.
 
+    // Create a fake "paste" event.
     const files = [file] as FakeFileList
     files.item = (index: number) => files[index] ?? null
 
@@ -158,12 +185,6 @@ async function pasteImageInChatGPT(dataURI: string, text: string) {
     // Send the event to the ChatGPT text input.
     element.focus()
     element.dispatchEvent(event)
-
-    async function sleep(ms: number) {
-        return new Promise<void>(resolve => {
-            setTimeout(() => resolve(), ms)
-        })
-    }
 
     await sleep(10)
 

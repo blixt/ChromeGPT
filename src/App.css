@@ -22,3 +22,7 @@
 .chat-input input {
     flex: 1;
 }
+
+.chat-tab-selector {
+    width: 100%;
+}
