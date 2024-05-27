@@ -4,7 +4,6 @@ import { useCallback, useState } from "react"
 import { pasteImageInChatGPT } from "./pasteImageInChatGPT"
 import { useChatGPTTabs } from "./tabs"
 import { useActiveTabImageURL } from "./useActiveTabImageURL"
-import { useLocalStorage } from "./useLocalStorage"
 
 const defaultText = "Describe this image."
 
@@ -13,7 +12,7 @@ export default function MainScreen() {
     const imageURL = useActiveTabImageURL()
     // Persist the text value so that accidentally closing the extension doesn't
     // lose whatever was written.
-    const [text, setText] = useLocalStorage("text", "")
+    const [text, setText] = useState("text")
     const [selectedTabId, setSelectedTabId] = useState(tabs[0]?.id ?? -1)
     const [isSending, setIsSending] = useState(false)
 
@@ -45,10 +44,8 @@ export default function MainScreen() {
             }),
             chrome.tabs.update(tabId, { active: true }),
         ])
-        // Resets the persisted value.
-        setText("")
         window.close()
-    }, [selectedTabId, imageURL, text, setText])
+    }, [selectedTabId, imageURL, text])
 
     return (
         <Flex direction="column" gap="2">
