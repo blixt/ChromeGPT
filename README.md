@@ -25,7 +25,8 @@ This Chrome extension will be able to take a screenshot of any of your tabs, and
 then send the screenshot to ChatGPT, optionally with an associated message (if
 you don't write anything, it defaults to "Describe this image").
 
-To open it, you can press Alt+C / Option+C. This is what it looks like:
+To open it, you can press <kbd>Alt</kbd>+<kbd>C</kbd> /
+<kbd>Option</kbd>+<kbd>C</kbd>. This is what it looks like:
 
 ![Screenshot 2024-05-27 at 18 17 17](https://github.com/blixt/ChromeGPT/assets/158591/c3e2cf59-69ed-4d11-8436-dbbcd5df2876)
 
