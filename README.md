@@ -30,11 +30,14 @@ you don't write anything, it defaults to "Describe this image").
 
 To open it, you can press Alt+C / Option+C. This is what it looks like:
 
-![Screenshot 2024-05-26 at 12 43 58](https://github.com/blixt/ChromeGPT/assets/158591/fc009de3-1f0c-4f2b-bd79-80d33bf30079)
+![Screenshot 2024-05-27 at 18 17 17](https://github.com/blixt/ChromeGPT/assets/158591/c3e2cf59-69ed-4d11-8436-dbbcd5df2876)
 
-To send the query to ChatGPT, hit Enter. If you already have a ChatGPT tab open, you can pick it in the dropdown.
+To send the query to ChatGPT, hit Enter. If you already have a ChatGPT tab open,
+you can pick it in the dropdown. The extension will send the image off to
+whichever ChatGPT tab you chose and switch to that tab, wait for the image to
+upload, then send your message:
 
-![Screenshot 2024-05-26 at 12 45 12](https://github.com/blixt/ChromeGPT/assets/158591/fefd7ac0-b5c7-4d72-b28c-c268acdae18a)
+![Screenshot 2024-05-27 at 18 17 54](https://github.com/blixt/ChromeGPT/assets/158591/4f6c97d1-135f-4d11-97bc-873f2ea93e87)
 
 ### For developers
 
