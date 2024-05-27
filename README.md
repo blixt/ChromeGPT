@@ -5,15 +5,14 @@
 Sorry, there's no smooth installation for this right now. You'll need to follow
 these steps:
 
-1. In a terminal, clone the repo: `git clone https://github.com/blixt/ChromeGPT.git`
-2. Enter the repo and run `yarn` ([more info here](https://yarnpkg.com/getting-started/install))
-3. Now build the extension with `yarn build`
-4. In Google Chrome:
+1. Scroll up and find the latest release under **Releases** to the right
+2. Download **ChromeGPT.zip** and unzip it
+3. In Google Chrome:
    1. Go to **Manage Extensions**
    2. Enable **Developer Mode**
    3. Click **Load Unpacked Extension**
-   4. Browse to the `dist` directory inside of `ChromeGPT`
-5. The extension should now be available!
+   4. Select the **ChromeGPT** folder that you unzipped
+4. The extension should now be available!
 
 Note that installing an extension via Developer Mode bypasses review and
 security measures. I vouch for the code in this repository not doing anything
