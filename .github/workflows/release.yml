@@ -8,26 +8,23 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
     - uses: actions/checkout@v4
-
     - uses: actions/setup-node@v4
       with:
         node-version: 20
-
     - name: Install dependencies
       run: |
         corepack enable
         yarn
-
     - name: Build extension
       run: yarn build
-
     - name: Create .zip file
       run: |
         cd dist
         zip -r ../ChromeGPT.zip .
-
     - name: Create GitHub Release
       uses: softprops/action-gh-release@v2
       with:
