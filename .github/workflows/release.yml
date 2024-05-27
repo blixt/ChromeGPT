@@ -1,10 +1,9 @@
-name: Build Chrome Extension
+name: Create Release
 
 on:
   push:
-    branches: main
-  pull_request:
-    branches: main
+    tags:
+      - "v*.*.*"
 
 jobs:
   build:
@@ -33,5 +32,6 @@ jobs:
       uses: softprops/action-gh-release@v2
       with:
         files: ChromeGPT.zip
+        generate_release_notes: yes
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
