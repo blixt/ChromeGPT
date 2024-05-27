@@ -36,9 +36,6 @@ To send the query to ChatGPT, hit Enter. If you already have a ChatGPT tab open,
 
 ![Screenshot 2024-05-26 at 12 45 12](https://github.com/blixt/ChromeGPT/assets/158591/fefd7ac0-b5c7-4d72-b28c-c268acdae18a)
 
-Note that if you didn't set a vision model as your default ChatGPT model, this
-won't work.
-
 ### For developers
 
 More concretely, this extension injects a bit of JavaScript that finds the
