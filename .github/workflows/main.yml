@@ -5,21 +5,33 @@ on:
     branches: main
   pull_request:
     branches: main
-  workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
+
     - uses: actions/setup-node@v4
       with:
         node-version: 20
-    - run: |
+
+    - name: Install dependencies
+      run: |
         corepack enable
         yarn
-    - run: yarn build
-    - uses: actions/upload-artifact@v4
+
+    - name: Build extension
+      run: yarn build
+
+    - name: Create .zip file
+      run: |
+        cd dist
+        zip -r ../ChromeGPT.zip .
+
+    - name: Create GitHub Release
+      uses: softprops/action-gh-release@v2
       with:
-        name: ChromeGPT
-        path: dist
+        files: ChromeGPT.zip
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
