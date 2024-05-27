@@ -1,7 +1,10 @@
 {
     "manifest_version": 3,
     "name": "ChromeGPT",
-    "version": "1.0.0",
+    "version": "0.1.1",
+    "description": "Quickly ask ChatGPT about the page in front of you.",
+    "author": "me@blixt.org",
+    "homepage_url": "https://github.com/blixt/ChromeGPT",
     "action": { "default_popup": "index.html" },
     "icons": { "16": "icon16.png", "32": "icon32.png", "48": "icon48.png", "128": "icon128.png" },
     "permissions": ["activeTab", "scripting", "tabs"],
