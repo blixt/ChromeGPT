@@ -10,9 +10,7 @@ const defaultText = "Describe this image."
 export default function MainScreen() {
     const tabs = useChatGPTTabs()
     const imageURL = useActiveTabImageURL()
-    // Persist the text value so that accidentally closing the extension doesn't
-    // lose whatever was written.
-    const [text, setText] = useState("text")
+    const [text, setText] = useState("")
     const [selectedTabId, setSelectedTabId] = useState(tabs[0]?.id ?? -1)
     const [isSending, setIsSending] = useState(false)
 
