@@ -2,10 +2,7 @@
 
 ## Installation
 
-Sorry, there's no smooth installation for this right now. You'll need to follow
-these steps:
-
-1. Scroll up and find the latest release under **Releases** to the right
+1. Go to the latest release under [**Releases**](https://github.com/blixt/ChromeGPT/releases)
 2. Download **ChromeGPT.zip** and unzip it
 3. In Google Chrome:
    1. Go to **Manage Extensions**
@@ -14,12 +11,13 @@ these steps:
    4. Select the **ChromeGPT** folder that you unzipped
 4. The extension should now be available!
 
-Note that installing an extension via Developer Mode bypasses review and
-security measures. I vouch for the code in this repository not doing anything
-malicious, but it's always a good idea to carefully review the code before
-running it, since this extension is able to inject code into, and take
-screenshots of, all of your browser tabs. That said, a surprising number of
-extensions are able to do this, so always be careful!
+> [!NOTE]
+> Installing an extension via Developer Mode bypasses review and security
+> measures. I vouch for the code in this repository not doing anything
+> malicious, but it's always a good idea to carefully review the code before
+> running it, since this extension is able to inject code into, and take
+> screenshots of, all of your browser tabs. That said, a surprising number of
+> extensions are able to do this, so always be careful!
 
 ## How it works
 
