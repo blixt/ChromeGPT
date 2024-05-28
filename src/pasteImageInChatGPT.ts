@@ -3,21 +3,18 @@ type FakeFileList = File[] & { item(index: number): File | null }
 // Code that will run inside of the ChatGPT tab. For this reason, this function
 // must not reference any outside code.
 export async function pasteImageInChatGPT(dataURI: string, text: string) {
-    // Remember to update this as the ChatGPT UI evolves.
-    const placeholder = "Message ChatGPT"
-
     async function sleep(ms: number) {
         return new Promise<void>(resolve => {
             setTimeout(() => resolve(), ms)
         })
     }
 
-    async function sleepUntil(condition: () => boolean, timeout = 5_000) {
+    async function sleepUntil(condition: () => boolean, timeout = 10_000) {
         const start = performance.now()
         while (!condition()) {
             await sleep(50)
             if (performance.now() - start > timeout) {
-                throw Error("Timed out waiting for condition")
+                throw Error(`Timed out waiting for condition ${condition.toString().replace(/^\(\) => /, "")}`)
             }
         }
     }
@@ -26,8 +23,10 @@ export async function pasteImageInChatGPT(dataURI: string, text: string) {
     await sleepUntil(() => document.querySelector("input[type=file]") !== null)
 
     // Find the text input.
-    const element: HTMLTextAreaElement | null = document.querySelector(`textarea[placeholder='${placeholder}']`)
-    if (!element) return
+    const element: HTMLTextAreaElement | null = document.querySelector("textarea")
+    if (!element) {
+        throw Error("Could not find text input")
+    }
 
     // Turn the data URI into a File object.
     const parts = dataURI.split(";base64,")
@@ -39,7 +38,7 @@ export async function pasteImageInChatGPT(dataURI: string, text: string) {
     }
     const file = new File([uInt8Array], "image", { type: imageType })
 
-    // Create a fake "paste" event.
+    // Create a fake "paste" event containing the image.
     const files = [file] as FakeFileList
     files.item = (index: number) => files[index] ?? null
 
@@ -81,6 +80,7 @@ export async function pasteImageInChatGPT(dataURI: string, text: string) {
 
     await sleep(10)
 
+    // Fake that we typed the text into the text input.
     element.value = text
     element.dispatchEvent(
         new InputEvent("input", {
@@ -96,15 +96,12 @@ export async function pasteImageInChatGPT(dataURI: string, text: string) {
 
     // Wait for the upload to complete...
     const sendButton = document.querySelector("[data-testid*='send-button']") as HTMLButtonElement | null
-    if (!sendButton) return
-
-    // Try 600 times = ~1 minute to upload image before we give up.
-    for (let i = 0; i < 600; i++) {
-        if (!sendButton.disabled) {
-            // Send the message by simulating a click on the Send button.
-            sendButton.click()
-            break
-        }
-        await sleep(100)
+    if (!sendButton) {
+        throw Error("Could not find send button")
     }
+
+    // Wait ~1 minute to upload image before we give up.
+    await sleepUntil(() => !sendButton.disabled, 60_000)
+    // Send the message by simulating a click on the Send button.
+    sendButton.click()
 }
