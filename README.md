@@ -14,7 +14,7 @@
 > [!NOTE]
 > Installing an extension via Developer Mode bypasses review and security
 > measures. I vouch for the code in this repository not doing anything
-> malicious, but it's always a good idea to carefully review the code before
+> malicious, but it’s always a good idea to carefully review the code before
 > running it, since this extension is able to inject code into, and take
 > screenshots of, all of your browser tabs. That said, a surprising number of
 > extensions are able to do this, so always be careful!
@@ -23,7 +23,7 @@
 
 This Chrome extension will be able to take a screenshot of any of your tabs, and
 then send the screenshot to ChatGPT, optionally with an associated message (if
-you don't write anything, it defaults to "Describe this image").
+you don’t write anything, it defaults to “Describe this image”).
 
 To open it, you can press <kbd>Alt</kbd>+<kbd>C</kbd> /
 <kbd>Option</kbd>+<kbd>C</kbd>. This is what it looks like:
@@ -39,9 +39,13 @@ upload, then send your message:
 
 ### For developers
 
-More concretely, this extension injects a bit of JavaScript that finds the
-`<textarea>` with a specific placeholder ("Message ChatGPT"), sends it a fake
-`paste` event containing the image as a `File` and then a fake `input` event
-with the text. Then it waits for up to one minute to see if the button with
-`data-testid="send-button"` becomes enabled, and proceeds to click it when it
-does.
+More concretely, this extension injects a bit of JavaScript that finds a
+`<textarea>`, sends it a fake `paste` event containing the image as a `File` and
+then a fake `input` event with the text. Then it waits for up to one minute to
+see if the button with `data-testid*="send-button"` becomes enabled, and
+proceeds to click it when it does.
+
+For the most part this has been stable, but I did recently notice that some
+versions of the ChatGPT UI have `data-testid="fruitjuice-send-button"` while
+others have `data-testid="send-button"`. For this reason I’ve tried to make the
+code flexible to renames like these.
