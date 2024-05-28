@@ -95,7 +95,7 @@ export async function pasteImageInChatGPT(dataURI: string, text: string) {
     )
 
     // Wait for the upload to complete...
-    const sendButton = document.querySelector("[data-testid='send-button']") as HTMLButtonElement | null
+    const sendButton = document.querySelector("[data-testid*='send-button']") as HTMLButtonElement | null
     if (!sendButton) return
 
     // Try 600 times = ~1 minute to upload image before we give up.
