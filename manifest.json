@@ -1,7 +1,7 @@
 {
     "manifest_version": 3,
     "name": "ChromeGPT",
-    "version": "0.1.1",
+    "version": "0.1.4",
     "description": "Quickly ask ChatGPT about the page in front of you.",
     "author": "me@blixt.org",
     "homepage_url": "https://github.com/blixt/ChromeGPT",
