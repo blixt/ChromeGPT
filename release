@@ -1,0 +1,15 @@
+#!/bin/bash
+
+# Increment patch version in manifest.json
+current_version=$(grep -o '"version": "[0-9]\+\.[0-9]\+\.[0-9]\+"' manifest.json | grep -o '[0-9]\+\.[0-9]\+\.[0-9]\+')
+IFS='.' read -r major minor patch <<< "$current_version"
+new_patch=$((patch + 1))
+new_version="$major.$minor.$new_patch"
+
+# Update the version in manifest.json
+sed -i '' -e "s/\"version\": \"$current_version\"/\"version\": \"$new_version\"/" manifest.json
+
+# Commit and tag
+git add manifest.json
+git commit -m "Bump version to $new_version"
+git tag "v$new_version"
